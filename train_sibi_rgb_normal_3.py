@@ -86,10 +86,10 @@ rgb_model.compile(loss=keras.losses.categorical_crossentropy,
               optimizer=opt,
               metrics=['accuracy'])
 
-best_checkpoint = ModelCheckpoint('sibi_rgb_normal_2_weights_best.hdf5', monitor='val_acc', verbose=1, save_best_only=True, mode='max')
-checkpoint = ModelCheckpoint('sibi_rgb_normal_2_weights_epoch.hdf5', monitor='val_acc', verbose=1, save_best_only=False, mode='max')
-csv_logger = CSVLogger('sibi_rgb_normal_2.log', append=False)
-tensorboard = TensorBoard(log_dir='./sibi_rgb_normal_2_tf-logs')
+best_checkpoint = ModelCheckpoint('sibi_rgb_normal_3_weights_best.hdf5', monitor='val_acc', verbose=1, save_best_only=True, mode='max')
+checkpoint = ModelCheckpoint('sibi_rgb_normal_3_weights_epoch.hdf5', monitor='val_acc', verbose=1, save_best_only=False, mode='max')
+csv_logger = CSVLogger('sibi_rgb_normal_3.log', append=False)
+tensorboard = TensorBoard(log_dir='./sibi_rgb_normal_3_tf-logs')
 callbacks_list = [checkpoint,best_checkpoint, csv_logger, tensorboard]
 
 
