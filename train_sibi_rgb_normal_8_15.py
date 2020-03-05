@@ -9,15 +9,15 @@ from keras.preprocessing.image import ImageDataGenerator
 FRAME_HEIGHT = 224
 FRAME_WIDTH = 224
 NUM_FRAMES = 118
-NUM_CLASSES = 10
+NUM_CLASSES = 15
 BATCH = 4
 
 #Training I3D 8 module inception freeze transfer learning imagenet dan kinetic dataset 15 class
 
-hf = h5py.File("sibi_rgb_normal.h5","r")
-train_label_file = open("train_sibi_1.txt","r")
-test_label_file = open("test_validation_sibi_1.txt","r")
-validation_label_file = open("test_validation_sibi_1.txt","r")
+hf = h5py.File("sibi_rgb_normal_15.h5","r")
+train_label_file = open("train_sibi_2.txt","r")
+test_label_file = open("test_validation_sibi_2.txt","r")
+validation_label_file = open("test_validation_sibi_2.txt","r")
 train_raw_labels = train_label_file.read().split("\n")
 test_raw_labels = test_label_file.read().split("\n")
 validation_raw_labels = validation_label_file.read().split("\n")
@@ -34,8 +34,8 @@ def generator(type):
       batch_features = np.zeros((BATCH,NUM_FRAMES, FRAME_WIDTH, FRAME_HEIGHT,3))
       batch_labels = np.zeros((BATCH,NUM_CLASSES))
       for i in range(BATCH):
-        batch_features[i] = hf["train"][counter%120]
-        batch_labels[i] = train_labels[counter%120]
+        batch_features[i] = hf["train"][counter%180]
+        batch_labels[i] = train_labels[counter%180]
         # print("Index: "+str(i)+", Counter: "+str(counter))
         # print(batch_labels)
         counter+=1
@@ -45,8 +45,8 @@ def generator(type):
       batch_features = np.zeros((1,NUM_FRAMES, FRAME_WIDTH, FRAME_HEIGHT,3))
       batch_labels = np.zeros((1,NUM_CLASSES))
       for i in range(1):
-        batch_features[i] = hf["test"][counter%40]
-        batch_labels[i] = test_labels[counter%40]
+        batch_features[i] = hf["test"][counter%60]
+        batch_labels[i] = test_labels[counter%60]
         # print("Index: "+str(i))
         # print(batch_labels)
         counter+=1
@@ -56,8 +56,8 @@ def generator(type):
       batch_features = np.zeros((BATCH,NUM_FRAMES, FRAME_WIDTH, FRAME_HEIGHT,3))
       batch_labels = np.zeros((BATCH,NUM_CLASSES))
       for i in range(BATCH):
-        batch_features[i] = hf["validation"][counter%40]
-        batch_labels[i] = validation_labels[counter%40]
+        batch_features[i] = hf["validation"][counter%60]
+        batch_labels[i] = validation_labels[counter%60]
         # print("Index: "+str(i))
         # print(batch_labels)
         counter+=1
@@ -96,9 +96,9 @@ callbacks_list = [checkpoint,best_checkpoint, csv_logger, tensorboard]
 
 # len(hf["train"])
 # len(hf["validation"])
-rgb_model.fit_generator(generator("train"), steps_per_epoch=120//BATCH, epochs=200, callbacks=callbacks_list,shuffle=True,validation_data = generator("validation"),validation_steps=40//BATCH)
+rgb_model.fit_generator(generator("train"), steps_per_epoch=180//BATCH, epochs=200, callbacks=callbacks_list,shuffle=True,validation_data = generator("validation"),validation_steps=60//BATCH)
 
-score = rgb_model.predict_generator(generator("test"),steps=40)
+score = rgb_model.predict_generator(generator("test"),steps=60)
 np.save("sibi_rgb_normal_result_6",score)
 # print('Test loss:', score[0])
 # print('Test accuracy:', score[1])
