@@ -99,7 +99,7 @@ callbacks_list = [checkpoint,best_checkpoint, csv_logger, tensorboard]
 rgb_model.fit_generator(generator("train"), steps_per_epoch=180//BATCH, epochs=200, callbacks=callbacks_list,shuffle=True,validation_data = generator("validation"),validation_steps=60//BATCH)
 
 score = rgb_model.predict_generator(generator("test"),steps=60)
-np.save("sibi_rgb_normal_result_9",score)
+np.save("sibi_rgb_normal_result_9_15",score)
 # print('Test loss:', score[0])
 # print('Test accuracy:', score[1])
 
